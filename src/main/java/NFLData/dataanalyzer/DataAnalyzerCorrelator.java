@@ -35,7 +35,7 @@ public class DataAnalyzerCorrelator {
      */
     public DataAnalyzerCorrelator(List<ValueHolder> data){
         this.valueData = data;
-        valueMap = findCorrelation();
+        findCorrelation();
     }
 
     /**
@@ -59,6 +59,21 @@ public class DataAnalyzerCorrelator {
         }
     };
 
+    /**
+     * Finds the individual correlations of each stat to a win value
+     *
+     * @param stat a non-null
+     * @return A map containing a key of the win total and its likelihood
+     * based on the given stat.
+     */
+    public double conditionalProb(double stat, double wins){
+        return pValueByWins.get(wins).get(stat) * pWins.get(wins) / pValue.get(stat);
+    }
+
+    private double findClosestValue(double stat){
+        return 0;
+    }
+
 
     /**
      * Finds the individual correlations of each stat to a win value
@@ -66,7 +81,7 @@ public class DataAnalyzerCorrelator {
      * @return A map containing a key of the win total and its likelihood
      * based on the given stat.
      */
-    private Map<Double, Double> findCorrelation(){
+    private void findCorrelation(){
 
         for(ValueHolder piece: valueData){
             pWins = addToMap(pWins, piece.getWins());
@@ -77,11 +92,6 @@ public class DataAnalyzerCorrelator {
         findPWins();
         findPValue();
         findPValueByWins();
-
-
-
-        return new HashMap<>();
-
     }
 
     /**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ValueHolderTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-10-17T23:26:05" hostname="Logans-MacBook-Air.local" time="0.015">
+<testsuite name="ValueHolderTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2022-10-18T00:55:43" hostname="Logans-MacBook-Air.local" time="0.01">
   <properties/>
-  <testcase name="basicTest()" classname="ValueHolderTests" time="0.014"/>
+  <testcase name="basicTest()" classname="ValueHolderTests" time="0.009"/>
   <testcase name="testImmutability()" classname="ValueHolderTests" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

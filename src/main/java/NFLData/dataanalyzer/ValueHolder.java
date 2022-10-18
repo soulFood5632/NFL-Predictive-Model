@@ -11,7 +11,6 @@ public class ValueHolder {
     }
 
 
-
     public double getValue(){
         return value;
     }

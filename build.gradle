@@ -1,28 +1,6 @@
 plugins {
     id 'java'
-    id 'jacoco'
 }
-
-test {
-    finalizedBy jacocoTestReport // report is always generated after tests run
-}
-jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
-}
-
-jacoco {
-    toolVersion = "0.8.8"
-    reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
-}
-
-jacocoTestReport {
-    reports {
-        xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-    }
-}
-
 
 group 'ca.ubc.ece.cpen221'
 version '0.5-SNAPSHOT'
@@ -32,9 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.knowm.xchart:xchart:3.8.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    implementation 'org.knowm.xchart:xchart:3.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 }
 
 test {

@@ -60,18 +60,43 @@ public class DataAnalyzerCorrelator {
     };
 
     /**
-     * Finds the individual correlations of each stat to a win value
+     * Finds the individual correlations of each stat to a win value. If the
+     * stat is not contained within the database it uses the closest value. If
+     * that value does not exist under this win total, use 0.01 / size of database
+     * at that win total.
      *
-     * @param stat a non-null
-     * @return A map containing a key of the win total and its likelihood
-     * based on the given stat.
+     * @param stat a non-null double value enclosing a stat value
+     * @return A double containing its likelihood based on the given stat.
      */
     public double conditionalProb(double stat, double wins){
-        return pValueByWins.get(wins).get(stat) * pWins.get(wins) / pValue.get(stat);
+        if(!pValue.containsKey(stat)){
+            stat = findClosestValue(stat);
+        } if(pValueByWins.get(wins).containsKey(stat)) {
+            return pValueByWins.get(wins).get(stat) * pWins.get(wins) / pValue.get(stat);
+        } else {
+            return 0.01/pValueByWins.get(wins).size() * pWins.get(wins) / pValue.get(stat);
+        }
     }
 
+    /**
+     * Finds the closest matching stat and returns that value
+     *
+     * @param stat a non-null double value that is the stat value
+     * @return A double value of the closest stat value
+     */
     private double findClosestValue(double stat){
-        return 0;
+        double closestValue = Math.abs(valueData.get(0).getValue() - stat);
+        double closestNum = valueData.get(0).getValue();
+
+        for(int indexCounter = 1; indexCounter < valueData.size(); indexCounter++){
+            if(closestValue > Math.abs(valueData.get(indexCounter).getValue() - stat)){
+                closestValue = Math.abs(valueData.get(indexCounter).getValue() - stat);
+                closestNum = valueData.get(indexCounter).getValue();
+            }
+        }
+
+        return closestNum;
+
     }
 
 
@@ -120,7 +145,7 @@ public class DataAnalyzerCorrelator {
         Map<Double, Map<Double, Double>> returnMap = new HashMap<>();
         pValueByWins.forEach((wins, map) -> {
             returnMap.put(wins, new HashMap<>());
-            map.forEach((value, count) -> returnMap.get(wins).put(value, count / pWins.get(wins)));
+            map.forEach((value, count) -> returnMap.get(wins).put(value, (count + 0.01) / (pWins.get(wins))));
         });
     }
 
@@ -134,8 +159,12 @@ public class DataAnalyzerCorrelator {
      * @return A map containing the incremented value.
      */
     private Map<Double, Double> addToMap(Map<Double, Double> map, Double keyToAddTo){ //this could have a big bug in double value precision
-        if(map.containsKey(keyToAddTo)){
-            map.replace(keyToAddTo, map.get(keyToAddTo) + 1);
+        if(map != null) {
+            if (map.containsKey(keyToAddTo)) {
+                map.replace(keyToAddTo, map.get(keyToAddTo) + 1);
+            } else {
+                map.put(keyToAddTo, 1D);
+            }
         } else {
             map.put(keyToAddTo, 1D);
         }
